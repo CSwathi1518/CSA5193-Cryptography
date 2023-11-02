@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <math.h>
+
+long long int mod_pow(long long int base, long long int exponent, long long int modulo) {
+    long long int result = 1;
+    base = base % modulo;
+    
+    while (exponent > 0) {
+        if (exponent % 2 == 1)
+            result = (result * base) % modulo;
+        
+        exponent = exponent >> 1;
+        base = (base * base) % modulo;
+    }
+    
+    return result;
+}
+
+int main() {
+    long long int p, g;
+    printf("Enter the prime number (p): ");
+    scanf("%lld", &p);
+    printf("Enter the primitive root (g): ");
+    scanf("%lld", &g);
+
+    long long int a, b;
+    printf("Enter Alice's private key (a): ");
+    scanf("%lld", &a);
+    printf("Enter Bob's private key (b): ");
+    scanf("%lld", &b);
+
+    long long int A = mod_pow(g, a, p);
+
+    long long int B = mod_pow(g, b, p);
+
+    long long int secret_key_alice = mod_pow(B, a, p);
+    long long int secret_key_bob = mod_pow(A, b, p);
+
+    printf("Alice's shared secret key: %lld\n", secret_key_alice);
+    printf("Bob's shared secret key: %lld\n", secret_key_bob);
+
+    if (secret_key_alice == secret_key_bob) {
+        printf("Secret keys match! Secure communication can proceed.\n");
+    } else {
+        printf("Secret keys do not match. Something went wrong!\n");
+    }
+
+    return 0;
+}
+Output:
+Enter the prime number (p): 23
+Enter the primitive root (g): 9
+Enter Alice's private key (a): 4
+Enter Bob's private key (b): 3
+Alice's shared secret key: 9
+Bob's shared secret key: 9
+Secret keys match! Secure communication can proceed.
