@@ -1,0 +1,59 @@
+#include <stdio.h>
+#include <string.h> 
+void encrypt(int key[][100], int size, char plaintext[], char ciphertext[]) {
+    int len = strlen(plaintext);
+    int i, j, k;
+    
+    for (i = 0; i < len; i += size) {
+        int p[100] = {0}, c[100] = {0};
+        
+        for (j = 0; j < size; j++) {
+            p[j] = plaintext[i + j] - 'A';
+        }
+        
+        for (j = 0; j < size; j++) {
+            for (k = 0; k < size; k++) {
+                c[j] += key[j][k] * p[k];
+            }
+            c[j] %= 26;
+        }
+        
+        for (j = 0; j < size; j++) {
+            ciphertext[i + j] = c[j] + 'A';
+        }
+    }
+    ciphertext[len] = '\0';
+}
+
+int main() {
+    int choice;
+    printf("Choose the matrix size: ");
+    scanf("%d", &choice);
+
+    int key[100][100];
+    printf("Enter the %dx%d key matrix: ", choice, choice);
+    for (int i = 0; i < choice; i++) {
+        for (int j = 0; j < choice; j++) {
+            scanf("%d", &key[i][j]);
+        }
+    }
+
+    char plaintext[100], ciphertext[100];
+
+    printf("Enter the plain text (uppercase letters only): ");
+    scanf("%s", plaintext);
+
+    encrypt(key, choice, plaintext, ciphertext);
+
+    printf("Cipher Text: %s\n", ciphertext);
+
+    return 0;
+}
+
+Output:
+Enter the 3x3 key matrix:
+3 10 20
+20 9 17
+9 4 17
+Enter the plaintext (in uppercase): ATTACKISTONIGHT
+Cipher Text: YAJMGWMVZUNCAMP
