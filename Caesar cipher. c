@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <string.h>
+
+void caesar_cipher(char str[], int key, int encrypt_flag) {
+    int n = strlen(str);
+    for (int i = 0; i < n; i++) {
+        if (encrypt_flag)
+            str[i] = ((str[i] - 'A' + key) % 26) + 'A';
+        else
+            str[i] = ((str[i] - 'A' - key + 26) % 26) + 'A';
+    }
+}
+
+int main() {
+    char str[] = "ATTACKATDAWN";
+    int key = 4;
+
+    printf("Original string: %s\n", str);
+    caesar_cipher(str, key, 1);
+    printf("Encrypted string: %s\n", str);
+
+    caesar_cipher(str, key, 0);
+    printf("Decrypted string: %s\n", str);
+
+    return 0;
+}
+
+output:
+Original string: ATTACKATDAWN
+Encrypted string: EXXEGOEXHEAR
+Decrypted string: ATTACKATDAWN
